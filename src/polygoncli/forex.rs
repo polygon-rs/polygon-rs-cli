@@ -1,23 +1,22 @@
-use clap::{arg, Command};
+use crate::polygoncli::{daily::Daily, nbbo::NBBO};
+use clap::Command;
+use polygon_rs_api::security::{forex, Secuirty};
 
 pub struct Forex {}
 
 impl Forex {
+    pub fn security() -> Secuirty {
+        Secuirty::Forex(forex::Forex {})
+    }
     pub fn command() -> Command {
         Command::new("forex")
             .about("Use the Forex API's")
             .arg_required_else_help(true)
             .subcommand_required(true)
             .short_flag('f')
-            .subcommand(
-                Command::new("nbbo")
-                    .about("Call Forex NNBO")
-                    .arg_required_else_help(true),
+            .subcommand(NBBO::command()
             )
-            .subcommand(
-                Command::new("daily")
-                    .about("Call Forex Daily")
-                    .arg_required_else_help(true),
+            .subcommand(Daily::command()
             )
     }
 }

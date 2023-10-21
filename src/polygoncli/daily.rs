@@ -1,25 +1,31 @@
 use clap::{arg, ArgMatches, Command};
 use polygon_rs_api::{
-    call::{nbbo, Call},
+    call::{daily, Call},
     polygon::{polygon::Polygon, sort::Sort, timespan::Timespan},
     security::Secuirty,
 };
 
-pub struct NBBO {}
+pub struct Daily {}
 
-impl NBBO {
+impl Daily {
     fn call() -> Option<Call> {
-        Some(Call::NBBO(nbbo::NBBO {
-            next_url: None,
-            request_id: None,
-            results: None,
+        Some(Call::Daily(daily::Daily {
+            after_hours: None,
+            close: None,
+            from: None,
+            high: None,
+            low: None,
+            open: None,
+            pre_market: None,
             status: None,
+            symbol: None,
+            volume: None,
         }))
     }
 
     pub fn command() -> Command {
-        Command::new("nbbo")
-            .about("Call NNBO")
+        Command::new("daily")
+            .about("Call Daily")
             .arg_required_else_help(true)
             .arg(
                 arg!(--ticker <Ticker> "Ticker symbol for Stock")
