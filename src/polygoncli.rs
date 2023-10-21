@@ -9,8 +9,10 @@ pub mod daily;
 use clap::ArgMatches;
 use crate::polygoncli::{cli::CLI, stocks::Stocks, options::Options, index::Index, forex::Forex, crypto::Crypto, nbbo::NBBO, daily::Daily};
 use polygon_rs_api::security::Secuirty;
+use std::env;
 
-pub struct PolygonCLI {}
+pub struct PolygonCLI {
+}
 
 impl PolygonCLI {
     fn parse(commands: &ArgMatches, security: Secuirty) {
@@ -22,6 +24,13 @@ impl PolygonCLI {
                 Daily::request(sub_matches, Some(security));
             },
             _ => unreachable!(),
+        }
+    }
+
+    pub fn checkforapikey() -> String {
+        match env::var("POLYGONAPIKEY"){
+            Ok(key) => key,
+            Err(e) => panic!("No Polygon API Key is set: {}", e),
         }
     }
 

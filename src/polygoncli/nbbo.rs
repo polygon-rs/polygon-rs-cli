@@ -1,3 +1,4 @@
+use crate::polygoncli::PolygonCLI;
 use clap::{arg, ArgMatches, Command};
 use polygon_rs_api::{
     call::{nbbo, Call},
@@ -24,9 +25,16 @@ impl NBBO {
             .arg(
                 arg!(--ticker <Ticker> "Ticker symbol for Stock")
                     .num_args(1)
+                    .default_value("SPY")
+                    .default_missing_value("SPY")
+                    .short('t'),
+            )
+            .arg(
+                arg!(--key <APIKEY> "API Key for interacting with polygon.io")
+                    .num_args(1)
                     .default_value(None)
                     .default_missing_value(None)
-                    .short('t'),
+                    .short('k'),
             )
     }
 
@@ -34,7 +42,7 @@ impl NBBO {
         let p = Polygon::polygon(
             security,
             Self::call(),
-            args.get_one::<String>("apikey").cloned(),
+            if args.get_one::<String>("apikey").cloned() == None {Some(PolygonCLI::checkforapikey())} else {args.get_one::<String>("apikey").cloned()},
             args.get_one::<String>("ticker").cloned(),
             args.get_one::<u16>("multiplier").cloned(),
             args.get_one::<Timespan>("timespan").cloned(),
