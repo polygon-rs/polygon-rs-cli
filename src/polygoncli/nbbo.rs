@@ -2,7 +2,7 @@ use crate::polygoncli::PolygonCLI;
 use clap::{arg, ArgMatches, Command, value_parser};
 use polygon_rs_api::{
     call::{nbbo, Call},
-    polygon::{polygon::Polygon, sort::Sort, timespan::Timespan},
+    polygon::{polygon::Polygon, sort::Sort},
     security::Secuirty,
 };
 
